@@ -13,27 +13,26 @@ const LoginForm = () => {
     const [password, setPassword] = useState("")
     const [isDisplayPassword, setIsDisplayPassword] = useState(false)
     const dispatch = useDispatch()
-    const { user } = useSelector((state) => state.userReducer)
+    const { user, error } = useSelector((state) => state.userReducer)
     const navigate = useNavigate()
 
     useEffect(() => {
-        if (user){
-            console.log("Đăng nhập thành công");
-        }
-        else{
+        if(error){
             setInvalidUser(false)
+            console.log("Đặng Thành hải");
+            
         }
-    }, [user])
+
+    }, [user, error])
 
     const loginHandler = async () => {
         setInvalidUser(true)
         try {
-
-            dispatch(login({ phone, password }))
-
+            dispatch(login({ phone, password }, navigate))
         } catch (error) {
             setInvalidUser(false)
         }
+        
     }
 
     const handleOnChangePhone = (e) => {

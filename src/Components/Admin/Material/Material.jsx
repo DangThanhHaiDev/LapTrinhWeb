@@ -3,6 +3,8 @@ import axios from "axios"
 import { useEffect, useState } from "react"
 import { useLocation, useNavigate } from "react-router-dom";
 import moment from "moment";
+import ImportProductModal from "../ImportProductModal/ImportProductModal";
+import CancelConfirmModal from "../CancelConfirmModal/CancelConfirmModal.jsx";
 
 
 const type = [
@@ -54,7 +56,24 @@ const Material = () => {
     const navigate = useNavigate()
     const [page, setPage] = useState(1)
     const [count, setCount] = useState(0)
+    const [isOpenImportProductModal, setIsOpenImportProductModal] = useState(false)
+    const [isOpenCancelConfirmModal, setIsOpenConfirmModal] = useState(false)
+    const [materialAdd, setMaterialAdd] = useState()
 
+    const openImportProductModal = () => {
+        setIsOpenImportProductModal(true)
+    }
+
+    const closeImportProductModal = () => {
+        setIsOpenImportProductModal(false)
+    }
+    const openCancelConfirmModal = () => {
+        setIsOpenConfirmModal(true)
+    }
+
+    const closeCancelConfirmModal = () => {
+        setIsOpenConfirmModal(false)
+    }
     const handleChangeTitle = (t) => {
         setTitle(t)
     }
@@ -136,6 +155,15 @@ const Material = () => {
         }
     }
 
+    const handleClickAddProduct = (row) => {
+        setMaterialAdd(row)
+        openImportProductModal()
+    }
+
+    const handleClickCancelProduct = (row)=>{
+        setMaterialAdd(row)
+        openCancelConfirmModal()
+    }
 
     return (
         <div>
@@ -143,7 +171,8 @@ const Material = () => {
                 <div>
                     <h1 className="text-3xl font-semibold p-5 text-left">Các mặt hàng còn trong kho</h1>
                 </div>
-                <div className="flex space-x-10">
+                <div className="text-left"><Button variant="contained" sx={{ bgcolor: "#303030" }} onClick={getAllItems}>Làm mới</Button></div>
+                <div className="flex space-x-10 mt-5">
                     {type.map((item, index) => (
                         <p onClick={(() => handleChangeTitle(item))} className={` text-white px-5 py-2 rounded-md cursor-pointer hover:opacity-70 active:opacity-50 ${title !== item ? 'bg-orange-400' : 'bg-orange-600'}`} key={index}>{item}</p>
                     ))}
@@ -174,10 +203,10 @@ const Material = () => {
                                         <StyledTableCell align="center">{moment(row.expirationDate).format("DD/MM/YYYY")}</StyledTableCell>
                                         <StyledTableCell align="center">
                                             <div className="space-x-2 text-left">
-                                                <Button variant="contained" sx={{ backgroundColor: "green" }}>Nhập thêm</Button>
+                                                <Button variant="contained" sx={{ backgroundColor: "green" }} onClick={() => handleClickAddProduct(row)} >Nhập thêm</Button>
                                                 {
                                                     moment(row.expirationDate).diff(moment(), "days") < 1 && (
-                                                        <Button variant="contained" sx={{ backgroundColor: "red" }}>
+                                                        <Button variant="contained" sx={{ backgroundColor: "red" }} onClick={()=>handleClickCancelProduct(row)}>
                                                             Loại bỏ
                                                         </Button>
                                                     )
@@ -197,6 +226,8 @@ const Material = () => {
                     <Pagination page={page} count={count} onChange={(e, value) => setPage(value)} color="secondary" size="large" />
                 </div>
             </div>
+            <ImportProductModal open={isOpenImportProductModal} product={materialAdd} handleClose={closeImportProductModal} />
+            <CancelConfirmModal open={isOpenCancelConfirmModal} handleClose={closeCancelConfirmModal} product={materialAdd} />
         </div>
     )
 }

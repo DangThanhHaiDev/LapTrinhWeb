@@ -12,6 +12,7 @@ export const LoginReducer = (state = initialState, action) => {
             return {
                 ...state,
                 isLoading: true,
+                error: null,
             }
         case GET_USER_SUCCESS:
             return {

@@ -2,6 +2,7 @@ import { Box, Button, FormControl, Grid, InputLabel, MenuItem, Modal, Select, Te
 import { useEffect, useState } from "react";
 import CreateIcon from '@mui/icons-material/Create';
 import axios from "axios";
+import url from "../../../config/Config";
 
 const style = {
     position: 'absolute',
@@ -27,6 +28,7 @@ const FoodUpdateModal = ({ open, handleClose, food, categories, isUpdate }) => {
     const [file, setFile] = useState()
     const [message, setMessage] = useState("")
     const [isSuccess, setIsuccess] = useState(false)
+    const [isSuccessUpdate, setIsSuccessUpdate] = useState(false)
 
 
     useEffect(() => {
@@ -39,12 +41,25 @@ const FoodUpdateModal = ({ open, handleClose, food, categories, isUpdate }) => {
             setType(food.categoryId)
             setImageActive(food.imageUrl)
             setFile(food.imageUrl)
-            setIsuccess(false)
-            
+            setIsuccess(false) 
+            setIsSuccessUpdate(false) 
+            setFile(base64ToFile(food.imageUrl))
+                      
         } else {
             resetModal()
         }
     }, [open])
+
+    const base64ToFile = (base64String, fileName, mimeType = 'image/png') => {
+        const byteString = atob(base64String.split(',')[1]);
+        const byteArray = new Uint8Array(byteString.length);
+      
+        for (let i = 0; i < byteString.length; i++) {
+          byteArray[i] = byteString.charCodeAt(i);
+        }
+      
+        return new File([byteArray], fileName, { type: mimeType });
+      }
 
     const resetModal = () => {
         setFoodName("")
@@ -71,20 +86,13 @@ const FoodUpdateModal = ({ open, handleClose, food, categories, isUpdate }) => {
     }
 
     const handleAddFood = async () => {
-        
-        
         if (!validateFood()) {
             return
         }
-        
-
         if (!imageActive) {            
             return;
         }
-        
-
         const reader = new FileReader();
-
         reader.onload = async () => {
             try {
                 const request = {
@@ -95,14 +103,10 @@ const FoodUpdateModal = ({ open, handleClose, food, categories, isUpdate }) => {
                     categoryId: type,
                     imageUrl: reader.result
                 };
-
-                console.log("Request:", request);
-                console.log(request);
-                
-
                 const response = await axios.post("http://localhost:5248/api/Food/add-food-item", request);
                 console.log(response);
-                
+                setIsuccess(true)
+
             } catch (error) {
                 console.error("Error uploading food:", error);
             }
@@ -116,6 +120,42 @@ const FoodUpdateModal = ({ open, handleClose, food, categories, isUpdate }) => {
         resetModal()
     };
 
+    const handleUpdateFood = async () => {
+        if (!validateFood()) {
+            return
+        }
+        if (!imageActive) {            
+            return;
+        }
+        const reader = new FileReader();
+        reader.onload = async () => {
+            try {
+                const request = {
+                    foodName,
+                    priceListed,
+                    priceCustom,
+                    unit,
+                    categoryId: type,
+                    imageUrl: reader.result,
+                    status,
+                    foodItemId: food.foodItemId
+                };
+                const response = await axios.put(`${url}/api/Food/update-food-item/${food.foodItemId}`, request);
+                console.log(response);
+                setIsSuccessUpdate(true)
+                
+            } catch (error) {
+                console.error("Error uploading food:", error);
+            }
+        };
+
+        reader.onerror = (error) => {
+            console.error("Error reading file:", error);
+        };
+
+        reader.readAsDataURL(file);
+        resetModal()
+    };
 
     const validateFood = () => {
         setIsuccess(false)
@@ -137,7 +177,6 @@ const FoodUpdateModal = ({ open, handleClose, food, categories, isUpdate }) => {
             setMessage("Tiền bạn nhập chưa hợp lý")
             return false
         }
-        setIsuccess(true)
         return true
     }
 
@@ -204,11 +243,15 @@ const FoodUpdateModal = ({ open, handleClose, food, categories, isUpdate }) => {
                                         isSuccess &&
                                         <p className="text-green-800">Bạn đã thêm sản phẩm thành công</p>
                                     }
+                                    {
+                                        isSuccessUpdate &&
+                                        <p className="text-green-800">Bạn đã sửa sản phẩm thành công</p>
+                                    }
                                 </div>
                                 <div className="text-right space-x-2 mt-5">
                                     <Button variant="contained" sx={{ bgcolor: "red" }} onClick={handleClose}>Hủy</Button>
                                     {isUpdate ?
-                                        <Button variant="contained" sx={{ bgcolor: "blue" }}>Xác nhận</Button>
+                                        <Button variant="contained" sx={{ bgcolor: "blue" }} onClick={handleUpdateFood}>Xác nhận</Button>
                                         :
                                         <Button variant="contained" sx={{ bgcolor: "blue" }} onClick={handleAddFood}>Thêm</Button>
 

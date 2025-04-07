@@ -50,6 +50,8 @@ export default function AddEmployeeModal({ isOpen, handleClose }) {
                 password: passwd,
                 role: pos
             })  
+           
+            
             if (response.data.success === 0) {
                 setErr("Tài khoản này đã tồn tại")
                 return

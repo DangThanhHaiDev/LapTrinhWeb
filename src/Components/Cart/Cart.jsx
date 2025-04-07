@@ -125,7 +125,7 @@ const Cart = () => {
             <div>
                 <h1 className="text-white border-b pb-1">Các món đã chọn</h1>
             </div>
-            <div className="h-[220px] overflow-scroll no-scrollbar">
+            <div className="h-[260px] overflow-scroll no-scrollbar">
                 <div className="p-5">
                     {
                         items.length > 0 &&
@@ -161,9 +161,7 @@ const Cart = () => {
                 <div>
                     <Button fullWidth sx={{ backgroundColor: "#f57c00", color: "white", marginTop: "10px" }} onClick={handleOrder}>Đặt món</Button>
                 </div>
-                <div>
-                    <Button fullWidth sx={{ backgroundColor: "#0d47a1", color: "white", marginTop: "10px" }}>Đặt món và chọn bàn</Button>
-                </div>
+           
             </div>
         </div>
     )
