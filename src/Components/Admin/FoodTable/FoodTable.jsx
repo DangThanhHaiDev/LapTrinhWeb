@@ -6,6 +6,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { useSearchParams } from "react-router-dom";
 import FoodUpdateModal from "../FoodUpdateModal/FoodUpdateModal";
 import DeletedConfirm from "../Confirm/DeletedComfirm";
+import url from "../../../config/Config";
 
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -93,7 +94,7 @@ const FoodTable = () => {
     
     const getAllCategories = async () => {
         try {
-            const response = await axios.get("http://localhost:5248/api/Food/get-all-category")
+            const response = await axios.get(`${url}/api/Food/get-all-category`)
             const { data } = response
             setCategories(data)
         } catch (error) {
@@ -105,7 +106,7 @@ const FoodTable = () => {
 
     const getAllFood = async () => {
         try {
-            const response = await axios.get("http://localhost:5248/api/Food/get-all-food-items")
+            const response = await axios.get(`${url}/api/Food/get-all-food-items`)
             const { data } = response
             setFood(data)
         } catch (error) {

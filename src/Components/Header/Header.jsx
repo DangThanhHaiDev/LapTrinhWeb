@@ -13,6 +13,7 @@ import { useDispatch } from "react-redux"
 import { getCategory } from "../../GlobalState/Category/Action"
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useNavigate } from "react-router-dom"
+import url from "../../config/Config"
 
 const Header = () => {
 
@@ -38,7 +39,7 @@ const Header = () => {
 
     const getAllCategory = async () => {
         try {
-            const response = await axios.get("http://localhost:5248/api/Food/get-all-category")
+            const response = await axios.get(`${url}/api/Food/get-all-category`)
             const { data } = response
             setCategories(data)
 

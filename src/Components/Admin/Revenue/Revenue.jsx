@@ -118,7 +118,7 @@ const Revenue = () => {
 
     const getAllStaffRevenue = async () => {
         try {
-            const response = await axios.get("http://localhost:5248/api/Report/total-revenue-employee")
+            const response = await axios.get(`${url}/api/Report/total-revenue-employee`)
             const { data } = response
             setStaffRevenue(data)
         } catch (error) {

@@ -5,6 +5,7 @@ import Cart from "../Cart/Cart"
 import axios from "axios"
 import { useEffect, useRef, useState } from "react"
 import { useDispatch, useSelector } from "react-redux";
+import url from "../../config/Config"
 
 
 const HomePage = () => {
@@ -40,7 +41,7 @@ const HomePage = () => {
 
     const getAllFood = async () => {
         try {
-            const response = await axios.get("http://localhost:5248/api/Food/get-all-food-items")
+            const response = await axios.get(`${url}/api/Food/get-all-food-items`)
             const { data } = response
             setFood(data)
         } catch (error) {

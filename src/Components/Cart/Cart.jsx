@@ -5,6 +5,7 @@ import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import axios from "axios"
 import { resetCart } from "../../GlobalState/Cart/Action"
+import url from "../../config/Config"
 
 
 const Cart = () => {
@@ -67,7 +68,7 @@ const Cart = () => {
         }
 
         try {
-            const response = await axios.post("http://localhost:5248/api/Food/add-order", request)
+            const response = await axios.post(`${url}/api/Food/add-order`, request)
             const { data } = response
             
 
@@ -114,7 +115,7 @@ const Cart = () => {
 
     const addOrderItem = async (useData) => {
         try {
-            await axios.post("http://localhost:5248/api/Food/add-order-item", useData)
+            await axios.post(`${url}/api/Food/add-order-item`, useData)
         } catch (error) {
 
         }

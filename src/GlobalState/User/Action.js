@@ -1,12 +1,13 @@
 import axios from "axios"
 import { GET_USER_FAILURE, GET_USER_REQUEST, GET_USER_SUCCESS } from "./ActionType"
+import url from "../../config/Config";
 
 export const login = (user, navigate) => async (dispatch) => {
     dispatch({ type: GET_USER_REQUEST })
     try {
         console.log(user);
         
-        const response = await axios.post("http://localhost:5248/api/User/login", user)
+        const response = await axios.post(`${url}/api/User/login`, user)
         const { data } = response
         if(data){
             if(data.role === "Owner" || data.role === "Manager" || data.role === "Admin"){

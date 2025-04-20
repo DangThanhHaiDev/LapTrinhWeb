@@ -18,9 +18,7 @@ const LoginForm = () => {
 
     useEffect(() => {
         if(error){
-            setInvalidUser(false)
-            console.log("Đặng Thành hải");
-            
+            setInvalidUser(false)            
         }
 
     }, [user, error])

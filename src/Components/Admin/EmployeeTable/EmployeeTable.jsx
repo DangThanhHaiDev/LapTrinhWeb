@@ -3,6 +3,7 @@ import EmployeeCard from "../EmployeeCard/EmployeeCard"
 import { useEffect, useState } from "react"
 import axios from "axios"
 import AddEmployeeModal from "../AddEmployeeModal/AddEmployeeModal"
+import url from "../../../config/Config"
 
 const EmployeeTable = () => {
 
@@ -15,7 +16,7 @@ const EmployeeTable = () => {
     }, [])
 
     const getAllEmployye = async () => {
-        const response = await axios.get("http://localhost:5248/api/User")
+        const response = await axios.get(`${url}/api/User`)
         const { data } = response
         setEmpList(data)
         

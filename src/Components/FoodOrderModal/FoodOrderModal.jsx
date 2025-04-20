@@ -9,6 +9,7 @@ import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { useDispatch } from "react-redux"
 import { addItemToCart } from '../../GlobalState/Cart/Action.js';
+import url from '../../config/Config.js';
 
 
 const style = {
@@ -40,7 +41,7 @@ const FoodOrderModal = ({ open, handleClose, foodOrder }) => {
 
     const getAllExTraFood = async () => {
         try {
-            const response = await axios.get("http://localhost:5248/api/Food/get-all-additional-food")
+            const response = await axios.get(`${url}/api/Food/get-all-additional-food`)
             let { data } = response
             data = data.filter((item) => (item.categoryId === foodOrder.categoryId))
             setExtraFood(data)

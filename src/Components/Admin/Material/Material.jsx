@@ -5,6 +5,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import moment from "moment";
 import ImportProductModal from "../ImportProductModal/ImportProductModal";
 import CancelConfirmModal from "../CancelConfirmModal/CancelConfirmModal.jsx";
+import url from "../../../config/Config.js";
 
 
 const type = [
@@ -147,7 +148,7 @@ const Material = () => {
 
     const getAllItems = async () => {
         try {
-            const response = await axios.get("http://localhost:5248/api/Inventory/get-all-material")
+            const response = await axios.get(`${url}/api/Inventory/get-all-material`)
             setItems(response.data)
             filter(response.data)
         } catch (error) {
